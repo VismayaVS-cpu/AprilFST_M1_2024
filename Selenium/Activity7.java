@@ -1,39 +1,51 @@
-package project;
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.Keys;
 
-public class Activity7 extends BaseClass {
+public class Activity7
+{
+    public static void main(String[] args) {
+        // Set up Firefox driver
+        WebDriverManager.firefoxdriver().setup();
+        // Create a new instance of the Firefox driver
+        WebDriver driver = new FirefoxDriver();
+        // Create the Actions object
+        Actions builder = new Actions(driver);
 
-    @Test
-    public void addQualification() throws InterruptedException {
-        setUp();
-        login();
+        // Open the page
+        driver.get("https://v1.training-support.net/selenium/drag-drop");
+        // Print the title of the page
+        System.out.println("Home page title: " + driver.getTitle());
 
-        //Click My Info
-        driver.findElement(By.id("menu_pim_viewMyDetails")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@value = 'Edit']")));
-        //Click Edit
-        driver.findElement(By.xpath("(//a[text() = 'Qualifications'])[2]")).click();
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h1[text() = 'Work Experience']"))));
+        // Find the football
+        WebElement football = driver.findElement(By.id("draggable"));
+        // Find the dropzone1
+        WebElement dropzone1 = driver.findElement(By.id("droppable"));
+        // Find the dropzone2
+        WebElement dropzone2 = driver.findElement(By.id("dropzone2"));
 
-        //Delete all jobs
-        driver.findElement(By.id("workCheckAll")).click();
-        driver.findElement(By.id("delWorkExperience")).click();
+        // Perform drag and drop to dropzone 1
+        builder.clickAndHold(football).moveToElement(dropzone1).pause(2000).release().build().perform();
+        // Verify that the ball was dropped in dropzone 1
+        String dropzone1Verify = dropzone1.findElement(By.tagName("p")).getText();
+        if(dropzone1Verify.equals("Dropped!")) {
+            System.out.println("Ball was dropped in dropzone 1");
+        }
 
-        //Click Add
-        driver.findElement(By.id("addWorkExperience")).click();
-        //Enter Company
-        driver.findElement(By.id("experience_employer")).sendKeys("Nutcraker");
-        //Enter Job title
-        driver.findElement(By.id("experience_jobtitle")).sendKeys("Hacker");
-        //Save
-        driver.findElement(By.id("btnWorkExpSave")).click();
+        // Perform drag and drop to dropzone 2
+        builder.dragAndDrop(football, dropzone2).build().perform();
+        // Verify that the ball was dropped in dropzone 2
+        String dropzone2Verify = dropzone2.findElement(By.tagName("p")).getText();
+        if(dropzone2Verify.equals("Dropped!")) {
+            System.out.println("Ball was dropped in dropzone 2");
+        }
 
-        Assert.assertNotEquals(driver.findElement(By.xpath("(//table/tbody/tr)[1]/td[2]")).getText(), "No Records Found", "Record not added");
-
-        tearDown();
+        // Close the browser
+        driver.close();
     }
 }

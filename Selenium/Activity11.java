@@ -1,3 +1,4 @@
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class Activity8 {
+
+public class Activity11
+{
     public static void main(String[] args) {
         // Set up Firefox driver
         WebDriverManager.firefoxdriver().setup();
@@ -25,18 +28,13 @@ public class Activity8 {
         // Print the title of the page
         System.out.println("Home page title: " + driver.getTitle());
 
-        // Find the toggle button and click it
-        WebElement toggleButton = driver.findElement(By.id("toggleCheckbox"));
-        toggleButton.click();
-        // Wait for the toggleButton to disappear
-        WebElement dynamicBox = driver.findElement(By.id("dynamicCheckbox"));
-        wait.until(ExpectedConditions.invisibilityOf(dynamicBox));
-        System.out.println(dynamicBox.isDisplayed());
-        // Click the button again
-        toggleButton.click();
-        // Wait for the element to appear
-        wait.until(ExpectedConditions.visibilityOf(dynamicBox));
-        System.out.println(dynamicBox.isDisplayed());
+        // Find the checkbox and click it
+        WebElement checkbox = driver.findElement(By.name("toggled"));
+        checkbox.click();
+        System.out.println("Checkbox is selected: " + checkbox.isSelected());
+        // Click the checkbox to deselect it
+        checkbox.click();
+        System.out.println("Checkbox is selected: " + checkbox.isSelected());
 
         // Close the browser
         driver.close();

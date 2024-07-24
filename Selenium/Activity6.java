@@ -1,27 +1,29 @@
-package project;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.Keys;
 
-public class Activity6 extends BaseClass {
+public class Activity6 {
+    public static void main(String[] args) {
+        // Create a new instance of the Firefox driver
+        WebDriver driver = new FirefoxDriver();
+        // Create the Actions object
+        Actions builder = new Actions(driver);
 
-    @Test
-    public void validateDirectory() throws InterruptedException {
-        setUp();
-        login();
+        // Open the page
+        driver.get("https://v1.training-support.net/selenium/input-events");
+        // Print the title of the page
+        System.out.println("Home page title: " + driver.getTitle());
 
-        WebElement directory = driver.findElement(By.xpath("//b[text() = 'Directory']/parent::a"));
-        Assert.assertTrue(directory.isDisplayed(), "Directory is not visible");
-        if (directory.isEnabled()) {
-            Assert.assertTrue(directory.isEnabled(), "Directory is not clickable");
-            directory.click();
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
-            Assert.assertEquals(driver.findElement(By.tagName("h1")).getText(), "Search Directory", "Page heading not correct");
-        }
+        // Press the key
+        builder.sendKeys("S").build().perform();
+        // Press CTRL+A and CTRL+C
+        builder.keyDown(Keys.CONTROL).sendKeys("a").sendKeys("c").keyUp(Keys.CONTROL).build().perform();
 
-        tearDown();
+        // Close the browser
+        driver.close();
     }
+
 }

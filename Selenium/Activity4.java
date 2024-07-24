@@ -1,44 +1,32 @@
-package project;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.util.List;
+public class Activity4 {
+    public static void main(String[] args) {
+        WebDriver driver = new FirefoxDriver();
 
-public class Activity4 extends BaseClass {
+        // Open the page
+        driver.get("https://v1.training-support.net/selenium/target-practice");
+        // Print the title of the page
+        System.out.println("Home page title: " + driver.getTitle());
 
-    @Test
-    public void addNewEmployee() throws InterruptedException {
-        setUp();
-        login();
+        // Find the 3rd header and print its text
+        String thirdHeaderText = driver.findElement(By.xpath("//h3[@id='third-header']")).getText();
+        System.out.println(thirdHeaderText);
+        // Find the 5th header and print its colour
+        String fifthHeaderColor = driver.findElement(By.xpath("//h5[text()='Fifth header']")).getCssValue("color");
+        System.out.println(fifthHeaderColor);
 
-        //Click PIM
-        driver.findElement(By.id("menu_pim_viewPimModule")).click();
-        //Click Employee list
-        driver.findElement(By.id("menu_pim_viewEmployeeList")).click();
-        //Click Add
-        driver.findElement(By.id("btnAdd")).click();
-        //Enter first name
-        driver.findElement(By.id("firstName")).sendKeys("FirstName");
-        //Enter last name
-        driver.findElement(By.id("lastName")).sendKeys("LastName");
-        //Get Employee id
-        String employeeID = driver.findElement(By.id("employeeId")).getAttribute("value");
-        //Click Save
-        driver.findElement(By.id("btnSave")).click();
+        // Find the violet button and print its classes
+        String violetButtonClass = driver.findElement(By.xpath("//button[text()='Violet']")).getAttribute("class");
+        System.out.println(violetButtonClass);
+        // Find the grey button and print its text
+        String greyButtonText = driver.findElement(By.xpath("//button[text()='Grey']")).getText();
+        System.out.println(greyButtonText);
 
-        //Click Employee list
-        driver.findElement(By.id("menu_pim_viewEmployeeList")).click();
-        //Enter Employee Id
-        driver.findElement(By.id("empsearch_id")).sendKeys(employeeID);
-        //Click Search
-        driver.findElement(By.id("searchBtn")).click();
-        //As we are searching by employee id only 1 record should be found i.e 1 row and 8 column in table
-        List<WebElement> tableResult = driver.findElements(By.xpath("//table[@id = 'resultTable']/tbody/tr/td"));
-        Assert.assertEquals(tableResult.size(), 8, "No record found for " + employeeID);
-
-        tearDown();
+        // Close the browser
+        driver.close();
     }
+
 }
